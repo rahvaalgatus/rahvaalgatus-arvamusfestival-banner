@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>Arvamusfestival ja Rahvaalgatus</title>
+
+		<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto+Slab:wght@300;600&display=swap" rel="stylesheet">
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				-webkit-box-sizing: border-box;
+				-moz-box-sizing: border-box;
+				box-sizing: border-box;
+				border: 0;
+				font-size: 100%;
+				font: inherit;
+				vertical-align: baseline;
+			}
+
+			li {
+				list-style-type: none;
+			}
+
+			a {
+				color: inherit;
+				text-decoration: none;
+				cursor: pointer;
+			}
+
+			*[hidden] {
+				display: none !important;
+			}
+
+			html,
+			body {
+				height: 100%;
+			}
+
+			html {
+				font-size: 62.5%;
+				scroll-snap-type: y mandatory;
+				color: white;
+			}
+
+			.slide {
+				position: absolute;
+				top: 0;
+				height: 100%;
+				width: 100%;
+				line-height: 1.4;
+				animation: 15s ease infinite sliding;
+				background-color: #005AA7;
+			}
+
+			#slide-1 a,
+			#slide-3 a {
+				padding: 2.5rem 2rem;
+				width: 100%;	
+				height: 100%;	
+				display: block;
+			}
+
+			#slide-1 p,
+			#slide-3 p {
+				font-family: "Montserrat", sans-serif;
+				font-size: 2.6rem;
+			}
+
+			#slide-1 {
+				font-weight: bold;
+				z-index: 3;
+				animation-delay: -750ms;
+
+				background:
+					url("rahvaalgatus.svg") left 20px bottom 20px/130px no-repeat,
+					url("arvamusfestival.svg") left 20px bottom 45px/100px no-repeat,
+					url("smiles.svg") right -30px bottom -30px no-repeat,
+					#005AA7;
+			}
+
+			#slide-2 {
+				padding: 2rem 2rem 2.5rem;
+				z-index: 2;
+				animation-delay: 4.25s;
+
+				background:
+					url("rahvaalgatus.svg") left 20px bottom 20px/130px no-repeat,
+					url("arvamusfestival.svg") left 170px bottom 20px/100px no-repeat,
+					#005AA7;
+			}
+
+			#slide-3 {
+				z-index: 1;
+				animation-delay: 9.25s;
+
+				background:
+					url("arvamusfestival.svg") left 20px bottom 20px/100px no-repeat,
+					url("smiles.svg") right -30px bottom -30px no-repeat,
+					#005AA7;
+			}
+
+			#slide-2:hover,
+			#slide-2:hover ~ .slide {
+				animation-play-state: paused;
+			}
+
+			#slide-2 h1 {
+				font-size: 1.6rem;
+				margin-bottom: 1rem;
+				font-family: "Montserrat", sans-serif;
+				font-weight: 700;
+			}
+
+			#slide-2 h1:after {
+				content: ":";
+			}
+
+			#slide-2 ol {
+				font-family: "Roboto Slab", serif;
+				font-weight: 300;
+			}
+
+			#slide-2 h2 {
+				font-weight: 600;
+				font-size: 1.6rem;
+				line-height: 2rem;
+				max-height: 4rem;
+
+				display: -webkit-box;
+				-webkit-line-clamp: 2;
+				-webkit-box-orient: vertical;
+				line-clamp: 2;
+				overflow: hidden;
+			}
+
+			#slide-2 a {
+				text-decoration: underline;
+			}
+
+			#slide-2 a:hover {
+				background: white;
+				color: #005AA7;
+			}
+
+			#slide-2 .counts {
+				font-size: 1.4rem;
+				margin-bottom: 2rem;
+			}
+
+			#slide-3 p img {
+				margin-top: 1.6rem;
+				display: block;
+				max-width: 100%;
+				width: 230px;
+			}
+
+			@keyframes sliding {
+				0% { z-index: 5; opacity: 0; pointer-events: none; }
+				5% { pointer-events: none; }
+				5.01%, 32.99% { z-index: 5; opacity: 1; pointer-events: auto; }
+				33% { z-index: 4; }
+			}
+		</style>
+	</head>
+
+	<body>
+		<section id="slide-2" class="slide" hidden>
+			<h1>Tänase päeva jooksul enim toetust kogunud algatused</h1>
+			<ol id="initiatives"></ol>
+		</section>
+
+		<section id="slide-1" class="slide">
+			<a href="https://rahvaalgatus.ee">
+				<p>
+					Arvamusfestivalilt jõuavad algatused Riigikogu suurde saali!
+				</p>
+			</a>
+		</section>
+
+		<section id="slide-3" class="slide">
+			<a href="https://rahvaalgatus.ee">
+				<p>
+					Millist toetad Sina?<br>
+					Hääleta!
+
+					<img alt="Rahvaalgatus.ee" src="rahvaalgatus.svg">
+				</p>
+			</a>
+		</section>
+
+		<script>!function() {
+			var slide = document.getElementById("slide-2")
+			var URL = "https://rahvaalgatus.ee"
+			var today = new Date().toISOString().slice(0, 10)
+
+			var path = "/initiatives"
+			path += "?signedSince=" + today
+			path += "&order=-signaturesSinceCount"
+			path += "&limit=3"
+			fetch(URL + path, {
+				headers: {Accept: "application/vnd.rahvaalgatus.initiative+json; v=1"}
+			}).then(function(res) { return res.json() }).then(function(initiatives) {
+				var ol = document.getElementById("initiatives")
+
+				initiatives.forEach(function(initiative, i) {
+					var li = document.createElement("li")
+
+					var h2 = document.createElement("h2")
+					var a = document.createElement("a")
+					a.href = URL + "/initiatives/" + initiative.id
+					a.textContent = initiative.title
+					h2.appendChild(a)
+
+					var counts = document.createElement("span")
+					counts.className = "counts"
+					var added = initiative.signaturesSinceCount
+					var total = initiative.signatureCount
+					var text = " +" + added + " allkirja täna, " + total + " kokku"
+					counts.appendChild(document.createTextNode(text))
+
+					li.appendChild(h2)
+					li.appendChild(counts)
+					ol.appendChild(li)
+				})
+
+				if (initiatives.length > 0) slide.removeAttribute("hidden")
+			}).catch(console.error)
+		}()</script>
+	</body>
+</html>
