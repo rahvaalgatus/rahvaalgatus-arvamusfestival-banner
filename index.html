@@ -185,7 +185,7 @@
 		</section>
 
 		<section id="slide-1" class="slide">
-			<a href="https://rahvaalgatus.ee" target="_blank">
+			<a href="https://rahvaalgatus.ee?utm_source=delfi&utm_medium=banner&utm_campaign=arvamusfestival" target="_blank">
 				<p>
 					Arvamusfestivalilt jõuavad algatused Riigikogu suurde saali!
 				</p>
@@ -193,7 +193,7 @@
 		</section>
 
 		<section id="slide-3" class="slide">
-			<a href="https://rahvaalgatus.ee" target="_blank">
+			<a href="https://rahvaalgatus.ee?utm_source=delfi&utm_medium=banner&utm_campaign=arvamusfestival" target="_blank">
 				<p>
 					Millist toetad Sina?<br>
 					Hääleta!
@@ -235,7 +235,9 @@
 
 					var h2 = document.createElement("h2")
 					var a = document.createElement("a")
-					a.href = URL + "/initiatives/" + initiative.id
+					var url = URL + "/initiatives/" + initiative.id
+					url += "?utm_source=delfi&utm_medium=banner&utm_campaign=arvamusfestival"
+					a.href = url
 					a.target = "_blank"
 					a.textContent = initiative.title
 					h2.appendChild(a)
