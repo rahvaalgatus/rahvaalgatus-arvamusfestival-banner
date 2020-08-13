@@ -206,15 +206,28 @@
 		<script>!function() {
 			var slide = document.getElementById("slide-2")
 			var URL = "https://rahvaalgatus.ee"
-			var today = new Date().toISOString().slice(0, 10)
-
 			var path = "/initiatives"
-			path += "?signedSince=" + today
+			path += "?signedSince=" + new Date().toISOString().slice(0, 10)
 			path += "&order=-signaturesSinceCount"
 			path += "&limit=3"
-			fetch(URL + path, {
-				headers: {Accept: "application/vnd.rahvaalgatus.initiative+json; v=1"}
-			}).then(function(res) { return res.json() }).then(function(initiatives) {
+
+      var xhr = new XMLHttpRequest
+
+			xhr.onload = function() {
+				if (!(xhr.status >= 200 && xhr.status < 300)) return
+				handleInitiatives(JSON.parse(xhr.responseText))
+			}
+
+      xhr.open("GET", URL + path, true)
+
+			xhr.setRequestHeader(
+				"Accept",
+				"application/vnd.rahvaalgatus.initiative+json; v=1"
+			)
+
+			xhr.send(null)
+
+			function handleInitiatives(initiatives) {
 				var ol = document.getElementById("initiatives")
 
 				initiatives.forEach(function(initiative, i) {
@@ -240,7 +253,7 @@
 				})
 
 				if (initiatives.length > 0) slide.removeAttribute("hidden")
-			}).catch(console.error)
+			}
 		}()</script>
 	</body>
 </html>
