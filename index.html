@@ -185,7 +185,7 @@
 		</section>
 
 		<section id="slide-1" class="slide">
-			<a href="https://rahvaalgatus.ee">
+			<a href="https://rahvaalgatus.ee" target="_blank">
 				<p>
 					Arvamusfestivalilt jõuavad algatused Riigikogu suurde saali!
 				</p>
@@ -193,7 +193,7 @@
 		</section>
 
 		<section id="slide-3" class="slide">
-			<a href="https://rahvaalgatus.ee">
+			<a href="https://rahvaalgatus.ee" target="_blank">
 				<p>
 					Millist toetad Sina?<br>
 					Hääleta!
@@ -223,6 +223,7 @@
 					var h2 = document.createElement("h2")
 					var a = document.createElement("a")
 					a.href = URL + "/initiatives/" + initiative.id
+					a.target = "_blank"
 					a.textContent = initiative.title
 					h2.appendChild(a)
 
